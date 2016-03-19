@@ -1,0 +1,108 @@
+{% extends "Home.html" %}
+{% block container %}
+  <div class="login-box">
+    <div class="lb-header">
+      <a href="#" class="active" id="login-box-link">Login</a>
+      <a href="#" id="signup-box-link">Sign Up</a>
+    </div>
+      <div class="u-form-group" align="center">
+        <h3>{{ ErrorMsg }}</h3>
+      </div>
+    <form class="email-login" action="/accounts/user_login/" method="POST">
+    {% csrf_token %}
+      <div class="u-form-group">
+        <div>
+        {%  if loginform.email.errors %}
+        <div>
+        {{ loginform.email}}
+        {{loginform.email.errors.0}}
+        
+        </div>
+        {% else %}
+         {{ loginform.email}}
+        {% endif %}
+        </div>
+      </div>
+      <div class="u-form-group">
+      <div>
+          {%  if loginform.password.errors %}
+        <div>
+        {{ loginform.password}}
+        {{loginform.password.errors.0}}
+        
+        </div>
+        {% else %}
+         {{ loginform.password}}
+        {% endif %}
+        </div>
+      </div>
+      <div class="u-form-group">
+        <button>Log in</button>
+      </div>
+      <div class="u-form-group">
+        <a href="{% url 'accounts.forgot' %}" class="forgot-password">Forgot password?</a>
+      </div>
+    </form>
+    <form class="email-signup" method="POST" action="/accounts/user_register/">
+    {% csrf_token %}
+      <div class="u-form-group">
+        <div>
+        {%  if registerform.name.errors %}
+        <div>
+        {{ registerform.namel}}
+        {{registerform.name.errors.0}}
+        
+        </div>
+        {% else %}
+         {{ registerform.name}}
+        {% endif %}
+        </div>
+              </div>
+      <div class="u-form-group">
+         <div>
+        {%  if registerform.email.errors %}
+        <div>
+        {{ registerform.email}}
+        {{registerform.email.errors.0}}
+        
+        </div>
+        {% else %}
+         {{ registerform.email}}
+        {% endif %}
+        </div>
+      </div>
+        <div class="u-form-group">
+         <div>
+        {%  if registerform.password.errors %}
+        <div>
+        {{ registerform.password}}
+        {{registerform.password.errors.0 }}
+        
+        </div>
+        {% else %}
+         {{ registerform.password }}
+        {% endif %}
+        </div>
+      </div>
+           <div class="u-form-group">
+         <div>
+        {%  if registerform.conpassword.errors %}
+        <div>
+        {{ registerform.conpassword }}
+        {{registerform.conpassword.errors.0 }}
+        
+        </div>
+        {% else %}
+         {{ registerform.conpassword }}
+        {% endif %}
+        </div>
+      </div>
+      
+      
+      <div class="u-form-group">
+        <button id="btnSinup">Sign Up</button>
+      </div>
+    </form>
+  </div>
+  {% endblock %}
+

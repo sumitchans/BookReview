@@ -1,0 +1,112 @@
+<style type="text/css">
+.aboutDiv {
+	margin: 1%;
+	padding: 2%;
+	float: none;
+	width: 100%;
+
+}
+.DescriptionDIv {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	text-align: left;
+	white-space: normal;
+	margin: 1%;
+	padding: 2%;
+	width: 100%;
+	border: 1px 1 #000;
+	min-height:300px;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0; 
+}
+th:first-child {
+    border-radius: 6px 0 0 0;
+}
+
+th:last-child {
+    border-radius: 0 6px 0 0;
+}
+
+th:only-child{
+    border-radius: 6px 6px 0 0;
+}
+#apDiv2{
+
+}
+</style>
+{% extends "Home.html" %}
+{% block container %}
+
+<div class="row">
+{% ifequal BookInfo -1 %}
+<div align="center"><p>No data available</p></div>
+{% else %}
+          <div class="col-md-3">
+          {% block Menu %}
+
+          <div style=max-height:500px;">
+          <img src="{{ BookInfo.book_image.url}}" alt="" style="max-height: 350px;" height="100%" width="100%">
+               
+                     </div>
+                       
+             
+               
+                {% endblock %}
+            </div>
+    
+          <div class="col-md-9">
+               {% block Body %}
+               <div style="min-height: 500px;">
+                 <div class="row carousel-holder">
+                   <div class="aboutDiv">ABOUT-&nbsp;&nbsp;&nbsp;{{ BookInfo.book_name }}</div>
+                   <div class="DescriptionDIv">{{ BookInfo.book_desc }}</div>
+                 </div>
+                 <div class="reviewDiv"><p class="pull-right">{{ BookInfo.book_total_review }}&nbsp;&nbsp;Reviews</p><p>Book Reviewd</p></div>
+              <div class="row">
+     <div> 
+     <div><form action="#" method="post" enctype="multipart/form-data">
+     {% csrf_token %}
+    <div class="labelDiv">
+           <div>
+        {%  if form.review.errors %}
+        <div>
+        {{ form.review }}
+        {{ form.review.errors.0}}
+        
+        </div>
+        {% else %}
+         {{ form.review }}
+        {% endif %}</div></div>
+
+  
+<div id="AddReviewButton" class="labelDiv" align="right"><input name="submit" type="submit" class="button" value="Submit" /><input name="reset" type="reset" class="button"/>
+  </div>
+  </form>
+  </div>    {% ifnotequal BookReview -1 %} 
+  <div id='Reviews' style="border:1;">   
+              {% for rv in BookReview %}
+ <div class="reviewDiv"><b>Reviewd By: @{{ rv.user_name }}</b></div>
+   <div class="reviewDiv">{{ rv.review }}</div>
+    <div class="reviewDiv">{{ rv.like_count }}&nbsp;&nbsp;
+    {% if rv.is_user_like %}<a href="/LikeReview/{{ rv.review_id }}/{{ BookInfo.book_id }}"><img src="/static/like.png" height="20" width="20"/></a>{% else %}
+    <img src="/static/like.png" height="20" width="20"/>{% endif %}
+    &nbsp;&nbsp;&nbsp;&nbsp;{{ rv.dislike_count }}&nbsp;&nbsp;{% if rv.is_user_dislike %}<a href="/DisLikeReview/{{ rv.review_id }}/{{ BookInfo.book_id }}">&nbsp;&nbsp;<img src="/static/dislike.png" height="20" width="20"/></a>
+    {% else %}<img src="/static/dislike.png" height="20" width="20"/>{% endif %}</div>
+<hr>
+{% endfor %}
+</div>
+{% endifnotequal %}
+</div>
+</div>
+     
+              </div>  
+{% endblock %}
+            </div>
+</div>
+
+{% endifequal %}
+       {% endblock %}

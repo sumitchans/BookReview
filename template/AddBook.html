@@ -1,0 +1,115 @@
+{% extends "Home.html" %}
+{% block Body %}
+<form action="#" method="post" enctype="multipart/form-data">
+<!--table border="0">
+ <tr>
+    <td colspan="2" align="center"><H2>Book Information</h2></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss" >Name</label></div></td>
+    <td><div class="labelDiv"><input name="book_name" type="text"  class="textbox" placeholder="Book name" size="50" /></div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Type</label></div></td>
+    <td> <div class="labelDiv">
+    <select name="book_type" class="selectbox">
+   <option selected="selected" value="-1">type</option>
+    <option value="1">Fiction</option>
+    <option value="2">Adventure</option>
+    <option value="3">Autobiography</option>
+  </select></div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Description</label></div></td>
+    <td><div class="labelDiv"><textarea name="book_desc" class="textbox" cols="50" rows="4" ></textarea></div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Pics</label></div></td>
+    <td><div class="labelDiv"><input name="book_image"  type="file" /></div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Review</label></div></td>
+    <td><div class="labelDiv"><textarea name="book_review" class="textbox"  cols="50" rows="6"></textarea></div></td>
+  </tr>
+    <tr>
+    <td><div class="labelDiv"><label class="labelCss">Rate</label></div></td>
+    <td><div class="labelDiv"><select name="book_rating" class="selectbox">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    </select></div></td>
+  </tr>
+    <tr>
+    <td colspan="2" align="center"><div class="labelDiv"><input name="submit" type="submit" class="button" value="Submit" /><input name="reset" type="reset" class="button"/></td>
+  </tr>
+</table-->
+{% csrf_token %}
+<table border="0">
+ <tr>
+    <td colspan="2" align="center"><H2>Book Information</h2></td>
+  </tr>
+ 
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss" >Name</label></div></td>
+    <td><div class="labelDiv"><div>
+        {%  if form.name.errors %}
+        <div>
+        {{ form.name }}
+        {{ form.name.errors.0 }}
+        </div>
+        {% else %}
+         {{ form.name }}
+        {% endif %}
+        </div></div></td></tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Type</label></div></td>
+    <td> <div class="labelDiv">
+    {% for ty in form.type %}
+    {{ ty }}{% endfor %}</div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Description</label></div></td>
+    <td><div class="labelDiv"><div>
+        {%  if form.description.errors %}
+        <div>
+        {{ form.description }}
+        {{ form.description.errors.0 }}
+        
+        </div>
+        {% else %}
+         {{ form.description }}
+        {% endif %}
+        </div></div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Pics</label></div></td>
+    <td><div class="labelDiv">{{ form.image }}</div></td>
+  </tr>
+  <tr>
+    <td><div class="labelDiv"><label class="labelCss">Review</label></div></td>
+    <td><div class="labelDiv"><div>
+        {%  if form.review.errors %}
+        <div>
+        {{ form.review }}
+        {{ form.review.errors.0 }}
+        </div>
+        {% else %}
+         {{ form.review }}
+        {% endif %}
+        </div></div></td>
+  </tr>
+    <tr>
+    <td><div class="labelDiv"><label class="labelCss">Rate</label></div></td>
+    <td><div class="labelDiv">  {% for rate in form.rating %}
+    {{ rate }}{% endfor %}</div></td>
+  </tr>
+    <tr>
+    <td colspan="2" align="center"><div class="labelDiv"><input name="submit" type="submit" class="button" value="Submit" /><input name="reset" type="reset" class="button"/></td>
+  </tr>
+</table>
+
+
+</form>
+{% endblock %}

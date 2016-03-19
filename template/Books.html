@@ -1,0 +1,61 @@
+
+{% for booklist in UserBooks %}
+              <div class="row">
+              {% for book in booklist %}
+                    <div class="col-sm-4 col-lg-4 col-md-4 bookDiv">
+                        <div class="thumbnail" >
+                        <div id="image" style="width:100%;min-height:200px; max-height:200x;">
+                            <img src="{{ book.book_image.url }}" alt="" style="max-width:320px;max-height:200px" height="200px" width="320px"/>
+                           </div>
+                            <div class="caption">
+                              <h4 class="pull-right">{{ book.book_type }}</h4><h4>Type</h4>
+                              <p>
+                              <a href="/BookInfo/{{ book.book_id }}">{{ book.book_name }}</a>
+                                </p>     
+                          </div>
+                            <div class="ratings">
+                            <p class="pull-right">{{ book.book_total_review }}&nbsp;&nbsp;Reviews</p>
+<Form id="BookRating_{{ book.book_id }}" method="POST" action="/BookRating/{{ book.book_id }}">
+ {% csrf_token %}
+ <p><span class="starRating">
+ 
+        <input id="rating5_{{ book.book_id }}" type="radio"  onclick="$('#BookRating_{{ book.book_id }}').submit();"  name="rating_{{ book.book_id }}" value="5" {% ifequal book.book_rating 5 %}checked="checked"{% endifequal %}>
+        <label for="rating5_{{ book.book_id }}">5</label>
+        <input id="rating4_{{ book.book_id }}" type="radio"  onclick="$('#BookRating_{{ book.book_id }}').submit();" name="rating_{{ book.book_id }}" value="4" {% ifequal book.book_rating 4 %}checked="checked"{% endifequal %}>
+        <label for="rating4_{{ book.book_id }}">4</label>
+        <input id="rating3_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();" name="rating_{{ book.book_id }}" value="3" {% ifequal book.book_rating 3 %}checked="checked"{% endifequal %}>
+        <label for="rating3_{{ book.book_id }}">3</label>
+        <input id="rating2_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();"  name="rating_{{ book.book_id }}" value="2" {% ifequal book.book_rating 2 %}checked="checked"{% endifequal %}>
+        <label for="rating2_{{ book.book_id }}">2</label>
+        <input id="rating1_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();"   name="rating_{{ book.book_id }}" value="1" {% ifequal book.book_rating 1 %}checked="checked"{% endifequal %}>
+        <label for="rating1_{{ book.book_id }}">1</label>
+     
+      </span>
+      </p>
+       </Form>
+                               
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+
+              </div>
+             {% endfor %}
+             
+<div class="pagination">
+    <span class="step-links">
+        {% if books.has_previous %}
+            <a href="?page={{ books.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ books.number }} of {{ books.paginator.num_pages }}.
+        </span>
+
+        {% if books.has_next %}
+            <a href="?page={{ books.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+         

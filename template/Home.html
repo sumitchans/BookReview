@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ page_title }}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    	<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="{{STATIC_URL}}bootstrap.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}main.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{STATIC_URL}}shop-homepage.css" rel="stylesheet">
+       <!-- jQuery -->
+    <script src="{{STATIC_URL}}jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{STATIC_URL}}bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.2.8/jquery.form-validator.min.js"></script>
+ 
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+$(document).ready(function()
+		{
+	$("#AddReviewButton").hide();
+	$(".login-box").width(500).height(350);
+	$(".email-signup").hide();
+	$("#login_link").click(function(){
+		$("#apDiv1").show();
+		$(".login-box").width(500).height(350);
+    	$(".email-signup").hide();
+		
+	});
+    $("#signup-box-link").click(function(){
+        $(".login-box").width(500).height(400);
+         //$(".email-login").fadIn(100);
+            $("#loginerror").hide();
+         $(".email-signup").show();
+         $(".email-login").hide();
+       //$(".email-signup").delay(100).fadeIn(100);
+         $("#login-box-link").removeClass("active");
+         $("#signup-box-link").addClass("active");
+       });
+    $("#login-box-link").click(function(){
+        $(".login-box").width(500).height(350);
+        $(".email-signup").hide();
+          $(".email-login").show();
+          //$(".email-login").delay(100).fadeIn(100);;
+          //$(".email-signup").fadeOut(100);
+          $("#login-box-link").addClass("active");
+          $("#signup-box-link").removeClass("active");
+        });
+    
+    /*$("#bookType :checkbox").click(function(){
+    	if($(this).is(":checked"))
+		{
+    	//alert($(this).attr("value"));
+        //filter($(this).attr("value"));
+         var checkValues = $('#bookType :checked').map(function()
+            {
+                return $(this).val();
+         alert(checkValues);
+         //$.get("/BookFilter/",{'book_type':checkValues},function(data){alert("pageUpdated")})
+		$.ajax({
+		url:"/BookFilter/",
+		type:"POST", 
+		data:{'book_type':checkValues},
+		complete:done,
+		  success: function(data) {
+	            alert("Congratulations! You scored:");
+	        },
+	        error: function(xhr, textStatus, errorThrown) {
+	            alert("Please report this error: "+errorThrown+xhr.status+xhr.responseText);
+	        }
+	});
+		}
+    });
+    $("#BookRating :checkbox").click(function(){
+    	if($(this).is(":checked"))
+		{
+    		//$("#BookRating").submit();
+    		var value=$(this).attr("value");
+    		$.ajax
+    		({
+    			url:"/BookFilter/",
+    			type:"POST", 
+    			data:{'book_id':$(this).attr("id"),rating:val},
+    			 success: function(json) {
+    		            alert("value updateed"+json);
+    		        },
+    		})
+		}	
+    	
+    });*/
+    $("#Review_Text").keyup(function(){
+    	$("#AddReviewButton").show();
+    });
+		});
+    
+
+	 
+</script>
+</head>
+
+<body>
+
+{% block header %}
+<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'Review.Home' %}">READ&REVIEW</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{% url 'Review.Home' %}">HOME</a>
+                    </li>
+                     <li>
+                        <a href="{% url 'Review.AddBook' %}">ADD BOOK</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Review.About' %}">ABOUT</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Review.Contact' %}">CONTACT US</a>
+                    </li>
+                </ul>
+                <ul class="pull-right nav navbar-nav">
+                {% if request.session.is_logged_in %}
+                 <li>
+                <a href="#" id="user_info">{{ request.session.user_name }}</a>
+                <ul class="menu_dropdown">
+                <li class="dropdown_element"><a href="{% url 'Review.UserBooks' %}">My Library</a></li>
+                <li class="dropdown_element"><a href="/accounts/reset/">Password Change</a></li>
+                <li class="dropdown_element"><a href="{% url 'accounts.logout' %}">Log Out</a></li>
+            </ul>
+                </li>
+                {% else %}
+                <li>
+                <a href="{% url 'accounts.login' %}">LOGIN/SINUP</a>
+            
+                </li>
+               
+                {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+{% endblock %}
+    <!-- Page Content -->
+    <p>{{ len }}</p>
+    <div class="container">
+{% block container %}
+        <div class="row">
+
+          <div class="col-md-3">
+          {% block Menu %}
+                <p class="lead">TYPE</p>
+                
+                <div class="list-group">
+                  <div class="list-group-item">
+            <input type="text" name="type_filter" class="textbox" size="25"/>
+            </div>
+             <form id="bookType" action="/BookFilter/" method="POST">
+                <div style="max-height:400px;overflow-y: scroll;overflow-x:none;">
+               
+                {% csrf_token %}
+                {% for book_type in booktypes %}
+                <div class="list-group-item">
+                      
+            <input type="checkbox" value="{{ book_type.id }}"  name="book_type" id="cb_{{ book_type.id }}" 
+            {% for selectedTypeid in FilterList %}{% ifequal book_type.id selectedTypeid.id %} checked="checked" {% endifequal %}{% endfor %} />&nbsp;&nbsp;{{ book_type.type }}
+            </div>
+            {% endfor %}
+            </div>
+            <div class="list-group-item" align="right"> <input type="Submit" Value="Filter" class="button"/>
+            </div>
+            </form>
+                
+                </div>
+                {% endblock %}
+            </div>
+    
+          <div class="col-md-9">
+               {% block Body %}
+               <div style="min-height: 500px;">
+                <div class="row carousel-holder">
+                  <div class="col-md-12">
+                  <div style="background-color:#666; padding:5%; height:150px;" align="center">
+                 
+                      <H1><strong>FIND BEST BOOKS AND IT'S REVIEW </strong><br/>
+                      </H1>
+                   
+                  <form action="#" method="POST">{% csrf_token %}
+                 <!--input name="searchBox" class="textbox"  size="40" type="text"-->
+                 {{ searchform }}
+               <input type="submit" class="search-button" value="GO"/>
+</form>
+                  </div>
+                  </div>
+                </div>  
+          
+
+{% for booklist in books %}
+              <div class="row">
+              {% for book in booklist %}
+                    <div class="col-sm-4 col-lg-4 col-md-4 bookDiv">
+                        <div class="thumbnail" >
+                        <div id="image" style="width:100%;min-height:200px; max-height:200x;">
+                            <img src="{{ book.book_image.url }}" alt="" style="max-width:320px;max-height:200px" height="200px" width="320px"/>
+                           </div>
+                            <div class="caption">
+                              <h4 class="pull-right">{{ book.book_type }}</h4><h4>Type</h4>
+                              <p>
+                              <a href="/BookInfo/{{ book.book_id }}">{{ book.book_name }}</a>
+                                </p>     
+                          </div>
+                            <div class="ratings">
+                            <p class="pull-right">{{ book.book_total_review }}&nbsp;&nbsp;Reviews</p>
+<Form id="BookRating_{{ book.book_id }}" method="POST" action="/BookRating/{{ book.book_id }}">
+ {% csrf_token %}
+ <p><span class="starRating">
+ 
+        <input id="rating5_{{ book.book_id }}" type="radio"  onclick="$('#BookRating_{{ book.book_id }}').submit();"  name="rating_{{ book.book_id }}" value="5" {% ifequal book.book_rating 5 %}checked="checked"{% endifequal %}>
+        <label for="rating5_{{ book.book_id }}">5</label>
+        <input id="rating4_{{ book.book_id }}" type="radio"  onclick="$('#BookRating_{{ book.book_id }}').submit();" name="rating_{{ book.book_id }}" value="4" {% ifequal book.book_rating 4 %}checked="checked"{% endifequal %}>
+        <label for="rating4_{{ book.book_id }}">4</label>
+        <input id="rating3_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();" name="rating_{{ book.book_id }}" value="3" {% ifequal book.book_rating 3 %}checked="checked"{% endifequal %}>
+        <label for="rating3_{{ book.book_id }}">3</label>
+        <input id="rating2_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();"  name="rating_{{ book.book_id }}" value="2" {% ifequal book.book_rating 2 %}checked="checked"{% endifequal %}>
+        <label for="rating2_{{ book.book_id }}">2</label>
+        <input id="rating1_{{ book.book_id }}" type="radio" onclick="$('#BookRating_{{ book.book_id }}').submit();"   name="rating_{{ book.book_id }}" value="1" {% ifequal book.book_rating 1 %}checked="checked"{% endifequal %}>
+        <label for="rating1_{{ book.book_id }}">1</label>
+     
+      </span>
+      </p>
+       </Form>
+                               
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+
+              </div>
+             {% endfor %}
+             
+<div class="pagination">
+    <span class="step-links">
+        {% if books.has_previous %}
+            <a href="?page={{ books.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ books.number }} of {{ books.paginator.num_pages }}.
+        </span>
+
+        {% if books.has_next %}
+            <a href="?page={{ books.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+         
+              </div>  
+{% endblock %}
+            </div>
+</div>
+       {% endblock %} </div>
+
+    </div>
+    <!-- /.container -->
+
+    <div class="container">
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Developed By Sumit Chansouliya</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+ 
+
+</body>
+
+</html>

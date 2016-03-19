@@ -1,0 +1,57 @@
+{% extends "Home.html" %}
+               {% block Body %}
+               <div style="min-height: 500px;">
+                <div class="row carousel-holder">
+                  <div class="col-md-12">
+                  <div style="background-color:#666; padding:5%; height:150px;" align="center">
+                 
+                      <H1><strong>FIND BEST BOOKS AND IT'S REVIEW </strong><br/>
+                      </H1>
+                   
+                  <form action="#" post="POST">
+                 <input name="searchBox" class="textbox"  size="40" type="text">
+               <input type="submit" class="search-button" value="GO"/>
+</form>
+                  </div>
+                  </div>
+                </div>
+{% for booklist in UserBooks %}
+              <div class="row">
+              {% for book in booklist %}
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail" >
+                         <div id="image" style="width:100%;min-height:200px; max-height:200x;">
+                          
+                            <img src="{{ book.book_image.url }}" alt="" style="max-width:320px;max-height:200px" height="200px" width="320px"/>
+                          </div>
+                            <div class="caption">
+                              <h4 class="pull-right">{{ book.book_type }}</h4><h4>Type</h4>
+                              <p>
+                              <a href="/BookInfo/{{ book.book_id }}">{{ book.book_name }}</a>
+                                </p>     
+                          </div>
+                            <div class="ratings">
+                            <p class="pull-right">{{ book.book_total_review }}&nbsp;&nbsp;Reviews</p>
+ <p><span class="starRating">
+        <input id="rating5_{{ book.book_id }}" type="radio" name="rating_1_{{ book.book_id }}" value="5" {% ifequal book.book_rating 5 %}checked="checked"{% endifequal %}>
+        <label for="rating5_{{ book.book_id }}">5</label>
+        <input id="rating4_{{ book.book_id }}" type="radio" name="rating_2_{{ book.book_id }}" value="4" {% ifequal book.book_rating 4 %}checked="checked"{% endifequal %}>
+        <label for="rating4_{{ book.book_id }}">4</label>
+        <input id="rating3_{{ book.book_id }}" type="radio" name="rating_3_{{ book.book_id }}" value="3" {% ifequal book.book_rating 3 %}checked="checked"{% endifequal %}>
+        <label for="rating3_{{ book.book_id }}">3</label>
+        <input id="rating2_{{ book.book_id }}" type="radio" name="rating_4_{{ book.book_id }}" value="2" {% ifequal book.book_rating 2 %}checked="checked"{% endifequal %}>
+        <label for="rating2_{{ book.book_id }}">2</label>
+        <input id="rating1_{{ book.book_id }}" type="radio" name="rating_5_{{ book.book_id }}" value="1" {% ifequal book.book_rating 1 %}checked="checked"{% endifequal %}>
+        <label for="rating1_{{ book.book_id }}">1</label>
+      </span>
+   </p>                            
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {% endfor %}
+
+              </div>
+             {% endfor %}
+              </div>  
+{% endblock %}
