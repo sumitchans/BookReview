@@ -74,6 +74,14 @@ class BookInformation(object):
             book_detail['book_desc']=bk.description
             book_detail['book_image']=bk.image
             book_detail['book_total_review']=bk.review_set.all().count()
+            if bk.softbook_set.all().count()!=0:
+                book_detail['bookavailable']=True
+                bt=bk.softbook_set.all().values('book')[0]
+                book_detail['bookpdf']=bt['book']
+            else:
+                book_detail['bookavailable']=False
+                
+                
             #book_detail(book_id,book_name,book_type,book_desc,book_image,book_total_review)
             return book_detail
         else:
@@ -140,6 +148,13 @@ class BookInformation(object):
             return True
         else:
             return False
+    
+    def SaveBook(self,book_id,user_id,book):
+        bk=BookInfo.objects.get(id=book_id)
+        user=UserInfo.objects.get(user_name=user_id)
+        print book
+        sb=SoftBook(book_id=bk,user_id=user,book=book)
+        sb.save()
         
               
         

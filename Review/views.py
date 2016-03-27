@@ -9,7 +9,7 @@ from django.shortcuts import redirect,render
 from BookReview.settings import BASE_DIR 
 from django.http.response import HttpResponseRedirectBase
 from django.shortcuts import render_to_response
-from Review.models import *
+from Review.models import * 
 from django.contrib.auth.context_processors import auth
 from email import email
 from Review.Business import BookInformation
@@ -22,7 +22,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from accounts.services import UserInformation
-from .forms import BookInfoForm,ReviewForm,SearchBook
+from .forms import BookInfoForm,ReviewForm,SearchBook,Book
 from endless_pagination.decorators import page_template
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
@@ -30,15 +30,20 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 def Hi(request):
     return render_to_response('Login.html')
-def Home(request):
-    print  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    print  os.path.dirname(os.path.abspath(__file__))
+def Home(request,Userbook=None):
+    #print  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    #print  os.path.dirname(os.path.abspath(__file__))
+    request.session['booktypes']=Business.BookInformation().GetBookType()
+    #request.session['searchform']=SearchBook()
     context={'page_title':Constants.homeTitle}
-    context['booktypes']=Business.BookInformation().GetBookType()
+    #context['booktypes']=Business.BookInformation().GetBookType()
     userbooks=None
     if request.method=='GET':
         context['searchform']=SearchBook()
-        userbooks=Business.BookInformation().GetUsersBook()
+        if Userbook is None:
+            userbooks=Business.BookInformation().GetUsersBook()
+        else:
+            userbooks=Business.BookInformation().GetUsersBook(request.session['user_name'])         
     if request.method=='POST':
         serform=SearchBook(data=request.POST)
         name=request.POST['searchBox']
@@ -60,8 +65,6 @@ def Home(request):
 def AddBook(request):
     template='AddBook.html'
     c={'page_title':Constants.addBookTitle}
-    
-    c['booktypes']=Business.BookInformation().GetBookType()
     if request.method=='GET':
         c['form']=BookInfoForm()
         return render_to_response(template,context=c,context_instance=RequestContext(request))
@@ -103,26 +106,6 @@ def BookInfo(request,book_id):
             return render_to_response('Book_Info.html',context=c,context_instance=RequestContext(request))
                 
         
-@login_required
-def AddBookInfo(request):
-    if request.method=='POST':
-        book_name=request.POST['name']
-        book_type=request.POST['type']
-        book_desc=request.POST['description']
-        book_image=request.FILES['image']
-        book_review=request.POST['review']
-        book_rate=request.POST['rating']
-        user_name=request.session['user_name']
-        book=Business.BookInformation().AddBook(book_name=book_name,book_type_id=book_type,book_desc=book_desc,book_image=book_image,
-                                    book_rating=book_rate,book_review=book_review,user_name=user_name)
-        return HttpResponseRedirect('/UserBooks/')
-@login_required
-def UserBooks(request):
-    user_name=request.session['user_name']
-    c={'page_title':'My Books'}
-    c['UserBooks']=Business.BookInformation().GetUsersBook(user_name)
-    c['booktypes']=Business.BookInformation().GetBookType()
-    return render_to_response('MyLibrary.html',context=c,context_instance=RequestContext(request));
 
 def BookFilter(request):
     c={'page_title':Constants.homeTitle}
@@ -154,15 +137,12 @@ def BookFilter(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         books = paginator.page(paginator.num_pages) 
     c['books']=books
-    #return HttpResponse("sdgfdn gdfg")
     return render_to_response('Home.html',context=c,context_instance=RequestContext(request))  
 @login_required
 def BookRating(request,book_id):
     if request.method=='POST':
         rating=request.POST.get('rating_'+str(book_id))
-        #rating=max(rating)
         Business.BookInformation().bookRating(book_id, rating,user_id=request.session['user_name'])
-        #return HttpResponse(json.dump(new_rating))
         return redirect(reverse('Review.Home'))  
 @login_required
 def AddReview(request,book_id):
@@ -190,6 +170,15 @@ def About(request):
 
 def Contact(request):
     return render(request,'ContactUs.html')
+
+def bookUpload(request):
+    if request.method=='POST':
+        book_id=request.POST['book_id']
+        #fl=request.FILES['bookfile']
+        fl1=request.FILES['bookfilesoft']
+        BookInformation().SaveBook(book_id=book_id,user_id=request.session['user_name'], book=fl1)
+        return HttpResponseRedirect("/BookInfo/%s" % book_id);
+     
     
              
 

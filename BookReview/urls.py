@@ -18,21 +18,17 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from BookReview import settings
 from accounts import urls
-from Review.views import AddBook,BookFilter,BookInfo,AddBookInfo,AddReview,LikeReview,DisLikeReview,BookRating,UserBooks
+from Review.views import *
 import Review
 import accounts
 import BookReview
 urlpatterns = patterns('',
-               url(r'^$',Review.views.Home,name='Review.Home'),
-                 #url(r'^Home/$',Review.views.Home,name='Review.Home'),
-           
+               url(r'^$',view='Review.views.Home',name='Review.Home'),
                 url(r'^accounts/',include(accounts.urls)),
-                #url(r'^Review/',include(Review.urls)),
                url(r'^admin/', include(admin.site.urls)),
                       url(regex=r'^AddBook/$',view='Review.views.AddBook',name='Review.AddBook'),
-                             url(regex=r'^AddBookInfo/$',view='Review.views.AddBookInfo',name='Review.AddBookInfo'),
-                     url(r'^BookInfo/(\d+)$',view='Review.views.BookInfo',name='Review.BookInfo'),
-                     url(r'^UserBooks/$',view='Review.views.UserBooks',name='Review.UserBooks'),
+                    url(r'^BookInfo/(\d+)$',view='Review.views.BookInfo',name='Review.BookInfo'),
+                     url(r'^UserBooks/$',view='Review.views.Home',kwargs={'Userbook':True},name='Review.UserBooks'),
                      url(r'^BookFilter/$',view='Review.views.BookFilter',name='Review.BookFilter'),
                      url(r'^BookRating/(\d+)$',view='Review.views.BookRating',name='Review.BookRating'),
                      url(r'^AddReview/(\d+)$',view='Review.views.AddReview',name='Review.AddReview'),
@@ -40,5 +36,6 @@ urlpatterns = patterns('',
                      url(r'^DisLikeReview/(\d+)/(\d+)$',view='Review.views.DisLikeReview',name='Review.DisLikeReview'), 
                        url(r'^About/$',view='Review.views.About',name='Review.About'),
                           url(r'^Contact/$',view='Review.views.Contact',name='Review.Contact'),
+                        url(r'^BookUpload/$',view='Review.views.bookUpload',name='Review.BookUpload'),
 )
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

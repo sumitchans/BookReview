@@ -57,5 +57,23 @@ class ReviewForm(forms.Form):
             raise forms.ValidationError(('Atleast 20 word'))   
         
 class Book(forms.Form):
-    file=forms.FileField(label='',required=True,widget=forms.FileInput(required=True))
-       
+    file=forms.FileField(label='')
+    
+#     def clean_file(self):
+#         file=self.cleaned_data['book']
+#         if validate_file_extension(file):
+#             return file
+#         else:
+#             raise forms.ValidationError('Wrong File Type')
+# 
+# def validate_file_extension(value):
+#     import os
+#     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
+#     valid_extensions = ['.pdf', '.doc', '.docx']
+#     if not ext in valid_extensions:
+#         return False
+#     else:
+#         return True
+    
+
+     

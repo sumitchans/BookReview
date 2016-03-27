@@ -35,12 +35,46 @@ th:only-child{
     border-radius: 6px 6px 0 0;
 }
 #apDiv2{
-
+	margin: 1%;
+	padding: 2%;
+	float: none;
+	width: 100%;
 }
 </style>
+
+
 {% extends "Home.html" %}
 {% block container %}
 
+<script type="text/javascript">
+var _validFileExtensions = [".pdf"];    
+function Validate(oForm) {
+    var arrInputs = oForm.getElementsByTagName("input");
+    for (var i = 0; i < arrInputs.length; i++) {
+        var oInput = arrInputs[i];
+        if (oInput.type == "file") {
+            var sFileName = oInput.value;
+            if (sFileName.length > 0) {
+                var blnValid = false;
+                for (var j = 0; j < _validFileExtensions.length; j++) {
+                    var sCurExtension = _validFileExtensions[j];
+                    if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                        blnValid = true;
+                        break;
+                    }
+                }
+                
+                if (!blnValid) {
+                    alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                    return false;
+                }
+            }
+        }
+    }
+  
+    return true;
+}
+</script>
 <div class="row">
 {% ifequal BookInfo -1 %}
 <div align="center"><p>No data available</p></div>
@@ -52,7 +86,23 @@ th:only-child{
           <img src="{{ BookInfo.book_image.url}}" alt="" style="max-height: 350px;" height="100%" width="100%">
                
                      </div>
-                       
+                     <p></p>
+                       <div>
+                  {% if BookInfo.bookavailable %}
+                 <div align="center"> <a href="/media/{{ BookInfo.bookpdf }}" class=button>DOWNLOAD</a></div>
+                  {% else %}
+                       <form action="{% url 'Review.BookUpload' %}" method="POST" enctype="multipart/form-data" onsubmit="return Validate(this);">
+                       {% csrf_token %}
+                     <input type="hidden" name='book_id' value="{{BookInfo.book_id}}"/>           
+<div id="apDiv2">
+    <input id='uploadfile' type="file" name="bookfilesoft" class="upload"  onchange="checkextension()"/>
+                 </div>
+                 <div align="center"><input type="submit" value="BOOK UPLOAD" class="button"/></div>
+                      </form>
+                     
+                      
+                      {% endif %}
+                    </div>
              
                
                 {% endblock %}

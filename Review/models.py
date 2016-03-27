@@ -40,7 +40,10 @@ class Comments(models.Model):
     book_id=models.ForeignKey(BookInfo)
     like=models.IntegerField(default=0)
     dislike=models.IntegerField(default=0)
+class SoftBook(models.Model):
+    book_id=models.ForeignKey(BookInfo)
+    user_id=models.ForeignKey(UserInfo)
+    book=models.FileField(upload_to='softcopy')
     
-    
-    
+        
     

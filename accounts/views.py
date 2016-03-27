@@ -72,7 +72,8 @@ def reset(request):
             p1=passform.cleaned_data['new_password']
             p2=passform.cleaned_data['confirm_password']
             if p1==p2:
-                UserInformation(request.session['user_name']).reset(p1,request.session['user_name'])
+                username=request.session['user_name']
+                UserInformation(request.session['user_name']).reset(p1,username)
                 return render_to_response('PasswordReset.html',{'ErrorMsg':'Password successfully change','form':UserPasswordResetForm()},RequestContext(request))
             else:
                 return render_to_response('PasswordReset.html',{'ErrorMsg':'Both password should same','form':UserPasswordResetForm()},RequestContext(request))
