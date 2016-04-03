@@ -26,6 +26,20 @@
     {{ ty }}{% endfor %}</div></td>
   </tr>
   <tr>
+    <td><div class="labelDiv"><label class="labelCss">Author</label></div></td>
+    <td><div class="labelDiv"><div>
+        {%  if form.author.errors %}
+        <div>
+        {{ form.author }}
+        {{ form.author.errors.0 }}
+        
+        </div>
+        {% else %}
+         {{ form.author }}
+        {% endif %}
+        </div></div></td>
+  </tr>
+  <tr>
     <td><div class="labelDiv"><label class="labelCss">Description</label></div></td>
     <td><div class="labelDiv"><div>
         {%  if form.description.errors %}

@@ -34,6 +34,7 @@ def Home(request,Userbook=None):
     #print  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     #print  os.path.dirname(os.path.abspath(__file__))
     request.session['booktypes']=Business.BookInformation().GetBookType()
+    request.session.modified=True
     #request.session['searchform']=SearchBook()
     context={'page_title':Constants.homeTitle}
     #context['booktypes']=Business.BookInformation().GetBookType()
@@ -65,6 +66,7 @@ def Home(request,Userbook=None):
 def AddBook(request):
     template='AddBook.html'
     c={'page_title':Constants.addBookTitle}
+    request.session['booktypes']=Business.BookInformation().GetBookType()
     if request.method=='GET':
         c['form']=BookInfoForm()
         return render_to_response(template,context=c,context_instance=RequestContext(request))
@@ -78,8 +80,9 @@ def AddBook(request):
             book_review=request.POST['review']
             book_rate=request.POST['rating']
             user_name=request.session['user_name']
+            author_name=request.POST['author']
             book=Business.BookInformation().AddBook(book_name=book_name,book_type_id=book_type,book_desc=book_desc,book_image=book_image,
-                                    book_rating=book_rate,book_review=book_review,user_name=user_name)
+                                    book_rating=book_rate,book_review=book_review,user_name=user_name,author=author_name)
             return HttpResponseRedirect('/UserBooks/')
         else:
             c['form']=form
@@ -110,6 +113,8 @@ def BookInfo(request,book_id):
 def BookFilter(request):
     c={'page_title':Constants.homeTitle}
     c['searchform']=SearchBook()
+    request.session['booktypes']=Business.BookInformation().GetBookType()
+                
     book_type=Business.BookInformation().GetBookType()
     book_filter_id=[]
     selectedType=[]

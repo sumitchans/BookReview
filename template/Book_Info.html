@@ -7,8 +7,8 @@
 
 }
 .DescriptionDIv {
-	font-family: Georgia, "Times New Roman", Times, serif;
-	font-size: 12px;
+    font-family: 'Droid Serif', serif;
+	font-size: 20px;
 	font-style: normal;
 	font-weight: normal;
 	text-align: left;
@@ -113,7 +113,7 @@ function Validate(oForm) {
                <div style="min-height: 500px;">
                  <div class="row carousel-holder">
                    <div class="aboutDiv">ABOUT-&nbsp;&nbsp;&nbsp;{{ BookInfo.book_name }}</div>
-                   <div class="DescriptionDIv">{{ BookInfo.book_desc }}</div>
+                   <div class="DescriptionDIv"><p style=" font-family: 'Droid Serif', serif;font-size: 15px;font-style: normal;font-weight: normal;"><i>{{ BookInfo.book_desc }}</i></p></div>
                  </div>
                  <div class="reviewDiv"><p class="pull-right">{{ BookInfo.book_total_review }}&nbsp;&nbsp;Reviews</p><p>Book Reviewd</p></div>
               <div class="row">

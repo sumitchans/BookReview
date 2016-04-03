@@ -16,6 +16,7 @@ class SearchBook(forms.Form):
 class BookInfoForm(forms.Form):
     name=forms.CharField(required=True,label='Name',max_length=200, widget=forms.TextInput(attrs={'required':True,'class':'textbox','placeholder':'Book Name','size':"45"}))
     type=forms.ChoiceField(label='Type',choices=bktype,widget=forms.Select(attrs={'required':True,'class':'selectbox'}))
+    author=forms.CharField(required=True,label='Author',max_length=200, widget=forms.TextInput(attrs={'required':True,'class':'textbox','placeholder':'Author Name','size':"45"}))
     description=forms.CharField(label='Description',required=True,widget=forms.Textarea(attrs={'required':True,'class':'textbox','placeholder':'Description','rows':'3','cols':'50'}))
     image=forms.ImageField(label='Image',required=True)
     review=forms.CharField(label='Review',required=True,widget=forms.Textarea(attrs={'required':True,'class':'textbox','placeholder':'Review','rows':'2','cols':'50'}))

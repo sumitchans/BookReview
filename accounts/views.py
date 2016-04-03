@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.core.urlresolvers import reverse
 from .services import *
+from Review.Business import *
 
 #Create your views here.
 def Login(request):
@@ -34,6 +35,7 @@ def user_login(request):
                 login(request,user)
                 request.session['user_name']=email
                 request.session['is_logged_in']=True
+                request.session['booktypes']=Review.Business.BookInformation().GetBookType()
                 if next:
                     return HttpResponseRedirect(next)
                 else:

@@ -11,11 +11,11 @@ from django.conf.urls.static import static
 from django.db.models import Q
 
 class BookInformation(object):
-    def AddBook(self,book_name,book_type_id,book_desc,book_image,book_review,book_rating,user_name):
+    def AddBook(self,book_name,book_type_id,book_desc,book_image,book_review,book_rating,user_name,author):
         book_type=BookType.objects.get(id=book_type_id)
         user_id=UserInfo.objects.get(user_name=user_name)
         book=BookInfo(book_name=book_name,book_type=book_type,date_of_add=datetime.now().date(),
-                      description=book_desc,image=book_image,user_id=user_id)
+                      description=book_desc,image=book_image,user_id=user_id,author=author)
         book.save()
         
         review=Review(review=book_review,book_id=book,user_id=user_id)

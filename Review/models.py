@@ -12,8 +12,9 @@ class BookType(models.Model):
 class BookInfo(models.Model):
     book_name=models.CharField(max_length=255)
     book_type=models.ForeignKey(BookType)
-    date_of_add=models.DateField()
+    date_of_add=models.DateField(default="Indian")
     description=models.TextField()
+    author= models.TextField()
     image=models.ImageField(upload_to='book')
     user_id=models.ForeignKey(UserInfo)
     approved=models.BooleanField(default=False)
@@ -44,6 +45,15 @@ class SoftBook(models.Model):
     book_id=models.ForeignKey(BookInfo)
     user_id=models.ForeignKey(UserInfo)
     book=models.FileField(upload_to='softcopy')
+
+
+class UsersFavourite(models.Model):
+    booktype=models.ForeignKey(BookType)
+    author=models.TextField()
+    userid=models.ForeignKey(UserInfo)
+    class Meta:
+        db_table='userFavourite'
+       
     
         
     

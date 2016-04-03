@@ -15,8 +15,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('book_name', models.CharField(max_length=255)),
-                ('date_of_add', models.DateField()),
+                ('date_of_add', models.DateField(default=b'Indian')),
                 ('description', models.TextField()),
+                ('author', models.TextField()),
                 ('image', models.ImageField(upload_to=b'book')),
                 ('approved', models.BooleanField(default=False)),
             ],
@@ -50,7 +51,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('like', models.IntegerField(default=0)),
-                
             ],
         ),
         migrations.CreateModel(
@@ -70,6 +70,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='SoftBook',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('book', models.FileField(upload_to=b'softcopy')),
+                ('book_id', models.ForeignKey(to='Review.BookInfo')),
+            ],
+        ),
+        migrations.CreateModel(
             name='UserInfo',
             fields=[
                 ('user_name', models.CharField(max_length=255, serialize=False, primary_key=True)),
@@ -77,6 +85,20 @@ class Migration(migrations.Migration):
                 ('password', models.CharField(max_length=255)),
                 ('confirm_password', models.CharField(max_length=255)),
             ],
+        ),
+        migrations.CreateModel(
+            name='UsersFavourite',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('author', models.TextField()),
+                ('booktype', models.ForeignKey(to='Review.BookType')),
+                ('userid', models.ForeignKey(to='Review.UserInfo')),
+            ],
+        ),
+        migrations.AddField(
+            model_name='softbook',
+            name='user_id',
+            field=models.ForeignKey(to='Review.UserInfo'),
         ),
         migrations.AddField(
             model_name='review',
